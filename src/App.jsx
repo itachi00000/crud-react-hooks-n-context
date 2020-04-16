@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Route } from 'react-router';
 
 // comp
 import Header from './components/Header';

@@ -1,9 +1,4 @@
-import {
-  ADD_USER,
-  DELETE_USER,
-  SEARCH_USER,
-  FETCH_USERS
-} from '../actionTypes';
+import { ADD_USER, DELETE_USER, SEARCH_USER, FETCH_USERS } from './actionTypes';
 
 const nextUserId = 0;
 

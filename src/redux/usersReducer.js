@@ -1,9 +1,4 @@
-import {
-  ADD_USER,
-  SEARCH_USER,
-  DELETE_USER,
-  FETCH_USERS
-} from '../actionTypes';
+import { ADD_USER, SEARCH_USER, DELETE_USER, FETCH_USERS } from './actionTypes';
 
 // redux state=initState  xxxx
 export function usersReducer(state, action) {
