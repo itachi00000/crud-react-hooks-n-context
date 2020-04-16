@@ -1,13 +1,13 @@
-import { createStore, applyMiddleware } from 'redux';
+// import { createStore, applyMiddleware } from 'redux';
 
-// m-Ware
-// import thunk from 'redux-thunk';
-import logger from 'redux-logger';
+// // m-Ware
+// // import thunk from 'redux-thunk';
+// import logger from 'redux-logger';
 
-//
-import rootReducer from './rootReducer';
+// //
+// import rootReducer from './rootReducer';
 
-const middlewares = [logger];
+// const middlewares = [logger];
 
-const store = createStore(rootReducer, applyMiddleware(...middlewares));
-export default store;
+// const store = createStore(rootReducer, applyMiddleware(...middlewares));
+// export default store;
