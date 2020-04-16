@@ -1,7 +1,7 @@
 import {
   ADD_USER,
   DELETE_USER,
-  SEARCH_QUERY,
+  SEARCH_USER,
   FETCH_USERS
 } from '../actionTypes';
 
@@ -15,10 +15,10 @@ export function addUser(user) {
   };
 }
 
-export function searchQuery(query) {
+export function searchUser(searchQuery) {
   return {
-    type: SEARCH_QUERY,
-    payload: query
+    type: SEARCH_USER,
+    payload: searchQuery
   };
 }
 
