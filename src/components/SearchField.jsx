@@ -1,22 +1,17 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react';
-import { userReducer, initState } from '../redux/users/usersReducer';
-import { DataContext } from '../context';
-import { searchQuery } from '../redux/users/usersAction';
+import React, { useContext } from 'react';
 
-function SearchField() {
-  const [input, setInput] = useState('');
-  // // const [value, setValue] = useState('');
-  const { filterUsers } = useContext(DataContext);
+// context
+import { GlobalContext } from '../context/GlobalState';
+
+// redux action
+import { searchUser } from '../redux/usersAction';
+
+export default function SearchField() {
+  const { searchQuery: inputValue, dispatch } = useContext(GlobalContext);
 
   function handleInputChange(e) {
-    setInput(e.target.value);
-    filterUsers(input);
+    dispatch(searchUser(e.target.value));
   }
-  // useEffect(() => {
-  //   return () =>
-  // }, [input]);
-
-  console.log('state-query at Search', input);
 
   return (
     <div role="form">
@@ -26,9 +21,8 @@ function SearchField() {
         placeholder="Type Name"
         className="form-control"
         onChange={handleInputChange}
-        value={input}
+        value={inputValue}
       />
     </div>
   );
 }
-export default SearchField;

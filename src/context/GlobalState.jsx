@@ -1,5 +1,5 @@
 import React, { useReducer, createContext } from 'react';
-import { usersReducer } from '../redux/users/usersReducer';
+import { usersReducer } from '../redux/usersReducer';
 import userData from '../usersData';
 
 const initialState = {
