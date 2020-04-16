@@ -23,8 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # my
-/comp
-/redux
-robots.js
+/src/comp/
+/src/usersData.js
 NOTES.txt
 .eslintrc.json
