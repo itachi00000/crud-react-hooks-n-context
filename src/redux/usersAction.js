@@ -1,4 +1,10 @@
-import { ADD_USER, DELETE_USER, SEARCH_USER, FETCH_USERS } from './actionTypes';
+import {
+  ADD_USER,
+  DELETE_USER,
+  SEARCH_USER,
+  FETCH_USERS,
+  GET_USER
+} from './types';
 
 const nextUserId = 0;
 
@@ -24,9 +30,16 @@ export function deleteUser(id) {
   };
 }
 
-export function fetchUsers(url) {
+export function fetchUsers(users) {
   return {
     type: FETCH_USERS,
-    payload: url // ??
+    payload: users
+  };
+}
+
+export function getUser(user) {
+  return {
+    type: GET_USER,
+    payload: user
   };
 }

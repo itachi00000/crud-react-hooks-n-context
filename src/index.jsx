@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { GlobalProvider } from './context/GlobalState';
 
 // compo
@@ -9,8 +10,9 @@ import './bootstrap.min.css';
 
 ReactDOM.render(
   <GlobalProvider>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </GlobalProvider>,
-
   document.getElementById('root')
 );

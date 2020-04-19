@@ -1,18 +1,30 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import { GlobalContext } from '../context/GlobalState';
 
 // redux action
 import { deleteUser } from '../redux/usersAction';
 
-function ActionButtons({ selectedId }) {
+function ActionButtons({ id }) {
   const { dispatch } = useContext(GlobalContext);
+
+  const handleDelete = async () => {
+    try {
+      const res = await axios.delete(`http://localhost:5000/robots/${id}`);
+      console.log(`${res.data}`);
+    } catch (error) {
+      console.error(error.message);
+    }
+    return dispatch(deleteUser(id));
+  };
 
   return (
     <>
-      <button type="button" className="btn btn-sm btn-info" onClick={() => {}}>
+      <Link to={`/read/${id}`} className="btn btn-sm btn-info">
         Read
-      </button>
+      </Link>
       <button
         type="button"
         className="btn btn-sm btn-primary"
@@ -23,7 +35,7 @@ function ActionButtons({ selectedId }) {
       <button
         type="button"
         className="btn btn-sm btn-outline-danger"
-        onClick={() => dispatch(deleteUser(selectedId))}
+        onClick={handleDelete}
       >
         Delete
       </button>

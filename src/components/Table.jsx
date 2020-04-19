@@ -1,11 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useCallback } from 'react';
+import axios from 'axios';
+//
 import { GlobalContext } from '../context/GlobalState';
+
+// acttion
+import { fetchUsers } from '../redux/usersAction';
 
 // comp.
 import ActionButtons from './ActionButtons';
 
 export default function Table() {
-  const { users, searchQuery } = useContext(GlobalContext);
+  const { users, searchQuery, dispatch } = useContext(GlobalContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resp = await axios.get('http://localhost:5000/robots');
+        return dispatch(fetchUsers(resp.data));
+      } catch (error) {
+        return console.error(error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // console.log(users);
 
   const filteredUsers = users.filter(user => {
     return user.name.toLowerCase().includes(searchQuery.toLowerCase().trim());
@@ -18,7 +38,7 @@ export default function Table() {
       <td>{username}</td>
       <td>{email}</td>
       <td>
-        <ActionButtons selectedId={id} />
+        <ActionButtons id={id} />
       </td>
     </tr>
   ));
