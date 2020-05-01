@@ -12,7 +12,7 @@ export function usersReducer(state, action) {
     case ADD_USER:
       return { ...state, users: [...state.users, action.payload] };
     case FETCH_USERS:
-      return { ...state, users: action.payload };
+      return { ...state, users: action.payload, currentUser: null };
     case SEARCH_USER:
       return { ...state, searchQuery: action.payload };
     case DELETE_USER:
@@ -23,6 +23,7 @@ export function usersReducer(state, action) {
     case GET_USER:
       return {
         ...state,
+        users: [],
         currentUser: action.payload
       };
     default:

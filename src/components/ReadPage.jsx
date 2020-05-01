@@ -6,15 +6,17 @@ import { GlobalContext } from '../context/GlobalState';
 // action
 import { getUser } from '../redux/usersAction';
 
-function ReadPage() {
+export default function ReadPage() {
   const [errorFetch, setErrorFetch] = useState(false);
-  const { currentUser, dispatch } = useContext(GlobalContext);
+  const { currentUser, users, searchQuery, dispatch } = useContext(
+    GlobalContext
+  );
   const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get(`http://localhost:5000/robots/${id}`);
+        const resp = await axios.get(`http://localhost:5000/api/robots/${id}`);
         const user = resp.data;
         dispatch(getUser(user));
       } catch (error) {
@@ -23,8 +25,11 @@ function ReadPage() {
       }
     };
     fetchData();
-  }, [id]);
-  console.log(id);
+  }, [dispatch, id]);
+
+  console.log('users:', users);
+  console.log('searchQuery:', searchQuery);
+  console.log('currentUser:', currentUser);
 
   // redirect when fetch error
   if (errorFetch) {
@@ -46,5 +51,3 @@ function ReadPage() {
     </div>
   );
 }
-
-export default ReadPage;
