@@ -7,18 +7,19 @@ import { GlobalContext } from '../context/GlobalState';
 // redux action
 import { deleteUser } from '../redux/usersAction';
 
-function ActionButtons({ id }) {
+export default function ActionButtons({ id }) {
   const { dispatch } = useContext(GlobalContext);
 
-  const handleDelete = async () => {
+  // async delete???
+  async function handleDelete() {
     try {
-      const res = await axios.delete(`http://localhost:5000/robots/${id}`);
-      console.log(`${res.data}`);
+      const res = await axios.delete(`http://localhost:5000/api/robots/${id}`);
+      console.log(res.data);
     } catch (error) {
       console.error(error.message);
     }
     return dispatch(deleteUser(id));
-  };
+  }
 
   return (
     <>
@@ -42,5 +43,3 @@ function ActionButtons({ id }) {
     </>
   );
 }
-
-export default ActionButtons;
