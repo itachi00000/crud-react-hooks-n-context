@@ -6,8 +6,12 @@ import { GlobalContext } from '../context/GlobalState';
 // action
 import { getUser } from '../redux/usersAction';
 
+// comp.
+import BackHome from '../components/BackHome';
+
 export default function ReadPage() {
   const [errorFetch, setErrorFetch] = useState(false);
+
   const { currentUser, users, searchQuery, dispatch } = useContext(
     GlobalContext
   );
@@ -27,6 +31,7 @@ export default function ReadPage() {
     fetchData();
   }, [dispatch, id]);
 
+  // for checking
   console.log('users:', users);
   console.log('searchQuery:', searchQuery);
   console.log('currentUser:', currentUser);
@@ -43,11 +48,14 @@ export default function ReadPage() {
 
   const { name, username, email } = currentUser;
   return (
-    <div>
-      <h3>Read Page for {id}</h3>
-      <p>name: {name}</p>
-      <p>username: {username}</p>
-      <p>email: {email}</p>
-    </div>
+    <>
+      <BackHome />
+      <div className="col-md-8">
+        <h3>Read Page for {id}</h3>
+        <p>name: {name}</p>
+        <p>username: {username}</p>
+        <p>email: {email}</p>
+      </div>
+    </>
   );
 }
