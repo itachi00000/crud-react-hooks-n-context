@@ -1,35 +1,24 @@
-import React, { useContext, useEffect } from 'react';
-import axios from 'axios';
-//
+import React, { useContext } from 'react';
+
+// context
 import { GlobalContext } from '../context/GlobalState';
 
-// action
-import { fetchUsers } from '../redux/usersAction';
-
 // comp.
+import AddForm from './AddForm';
+import EditForm from './EditForm';
 import ActionButtons from './ActionButtons';
 
 export default function Table() {
-  const { users, searchQuery, currentUser, dispatch } = useContext(
+  const { users, searchQuery, currentUser, editing } = useContext(
     GlobalContext
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resp = await axios.get('http://localhost:5000/api/robots');
-        return dispatch(fetchUsers(resp.data));
-      } catch (error) {
-        return console.error(error.message);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
+  // for logging
   console.log('users:', users);
   console.log('searchQuery:', searchQuery);
   console.log('currentUser:', currentUser);
+  console.log('editing:', editing);
+  console.log('<<<<*******************>>>>');
 
   const filteredUsers = users.filter(user => {
     return user.name.toLowerCase().includes(searchQuery.toLowerCase().trim());
@@ -48,17 +37,32 @@ export default function Table() {
   ));
 
   return (
-    <table className="table table-striped">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>{displayUsers}</tbody>
-    </table>
+    <>
+      <div className="col-lg-6">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsers.length ? (
+              displayUsers
+            ) : (
+              <tr>
+                <td colSpan="5" style={{ textAlign: 'center' }}>
+                  No Data Available....
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      {editing ? <EditForm /> : <AddForm />}
+    </>
   );
 }

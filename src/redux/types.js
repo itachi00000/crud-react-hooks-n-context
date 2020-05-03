@@ -4,3 +4,7 @@ export const DELETE_USER = 'DELETE_USER';
 export const EDIT_USER = 'EDIT_USER';
 export const FETCH_USERS = 'FETCH_USERS';
 export const GET_USER = 'GET_USER';
+export const EDITING = 'EDITING';
+export const SHOW_ALERT = 'SHOW_ALERT';
+export const IS_LOADING = 'IS_LOADING';
+export const IS_ERROR = 'IS_ERROR';
