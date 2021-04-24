@@ -18,7 +18,7 @@
     "sass": "1.23.7",
     "tachyons": "4.11.1",
     "typescript": "3.7.3",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "react-router-dom": "5.1.2"
   },
   "devDependencies": {
