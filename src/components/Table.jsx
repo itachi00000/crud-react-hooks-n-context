@@ -1,14 +1,21 @@
 import React, { useContext, useEffect } from 'react';
 import axios from 'axios';
 
-// context
+// ctx
 import { GlobalContext } from '../context/GlobalState';
+
+// action
+import { fetchUsers, showAlert } from '../redux/usersAction';
 
 // comp.
 import AddForm from './AddForm';
 import EditForm from './EditForm';
 import ActionButtons from './ActionButtons';
 
+// utils
+import { SERVER_URL } from '../server-url';
+
+// main
 export default function Table() {
   const {
     users,
@@ -21,10 +28,11 @@ export default function Table() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get('http://localhost:5000/api/robots');
-        return stableDispatch(fetchUsers(resp.data));
+        const resp = await axios.get(`${SERVER_URL}`);
+        stableDispatch(fetchUsers(resp.data));
       } catch (error) {
-        return console.error(error.message);
+        stableDispatch(showAlert('Error on Fetching', 'danger'));
+        console.error(error.message);
       }
     };
     console.log('use-effect getAllUser');
@@ -42,6 +50,7 @@ export default function Table() {
     return user.name.toLowerCase().includes(searchQuery.toLowerCase().trim());
   });
 
+  //
   const displayUsers = filteredUsers.map(({ id, name, username, email }) => (
     <tr key={id}>
       <td>{id}</td>
@@ -56,7 +65,7 @@ export default function Table() {
 
   return (
     <>
-      <div className="col-lg-6">
+      <div className="col-lg-9 col-md-9">
         <table className="table table-striped">
           <thead>
             <tr>

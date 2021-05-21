@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { GlobalContext } from '../context/GlobalState';
 
-// redux action
+// action
 import {
   editUser,
   getUser,
@@ -11,58 +11,72 @@ import {
   showAlert
 } from '../redux/usersAction';
 
+// utils
+import { SERVER_URL } from '../server-url';
+
+// main
 export default function EditForm() {
-  const { dispatch, currentUser } = useContext(GlobalContext);
+  const { dispatch, currentUser, stableDispatch } = useContext(GlobalContext);
   const [input, setInput] = useState(currentUser);
 
-  function resetForm() {
+  // CANCEL BUTTON
+  const resetForm = () => {
     // reset currentUser
     dispatch(getUser(null));
     // set editing: false
     dispatch(editingStatus(false));
-  }
 
-  async function handleUpdate() {
+    dispatch(showAlert(''));
+  };
+
+  const handleUpdate = async () => {
     try {
+      // input-form
       const { id, name, username, email } = input;
+
       if (!name || !username || !email) {
-        dispatch(showAlert('Lack of Info', 'danger'));
-        return;
+        return stableDispatch(showAlert('Lack of Info', 'danger'));
       }
-      const resp = await axios.put(`http://localhost:5000/api/robots/${id}`, {
+
+      const resp = await axios.put(`${SERVER_URL}/${id}`, {
         name,
         username,
         email
       });
+
       dispatch(editUser(resp.data));
-      dispatch(showAlert('User Updated', 'primary'));
-      resetForm();
+
+      stableDispatch(showAlert('User Updated', 'primary'));
+
+      return resetForm();
     } catch (error) {
       if (error.response) {
-        console.log('errorResponse: ', error.response.data.msg);
-        dispatch(showAlert(error.response.data.msg, 'danger'));
-      } else {
-        console.log('errorMsg:', error.message);
-        dispatch(showAlert(error.message, 'danger'));
+        console.error('errorResponse: ', error.response.data.msg);
+        return stableDispatch(showAlert(error.response.data.msg, 'danger'));
       }
+      console.error('errorMsg:', error.message);
+      return stableDispatch(showAlert(error.message, 'danger'));
     } finally {
       setTimeout(() => {
         // clearing msg
-        dispatch(showAlert(''));
+        stableDispatch(showAlert(''));
       }, 2000);
     }
-  }
+  };
 
-  function handleChange(e) {
+  // handle input
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setInput({ ...input, [name]: value });
-  }
+
+    setInput((prevInput) => ({ ...prevInput, [name]: value }));
+  };
+
   // console.log('Edit input', input);
   // console.log('Edit Status', editing);
   const { name, email, username } = input;
 
   return (
-    <div className="col-lg-4">
+    <div className="col-lg-3 col-md-3">
       <h3>Edit Form</h3>
       <form>
         <div className="form-group">

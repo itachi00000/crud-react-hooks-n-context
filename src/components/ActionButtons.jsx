@@ -2,9 +2,10 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+// ctx
 import { GlobalContext } from '../context/GlobalState';
 
-// redux action
+//  action
 import {
   deleteUser,
   editingStatus,
@@ -12,44 +13,55 @@ import {
   showAlert
 } from '../redux/usersAction';
 
-export default function ActionButtons({ id }) {
-  // const { dispatch, users } = useContext(GlobalContext);
-  const { stableDispatch } = useContext(GlobalContext);
+// utils
+import { SERVER_URL } from '../server-url';
 
-  // async delete???
-  // [add] window.confirm
-  async function handleDelete() {
-    if (!id) return;
+// main
+export default function ActionButtons({ id }) {
+  const { stableDispatch, dispatch, users } = useContext(GlobalContext);
+
+  // DELETE BUTTON + window.confirm()
+  const handleDelete = async () => {
+    if (!id || !users.length) return;
+
     // confirmation
     if (!window.confirm(`Deleting id:${id}, Are you Sure?`)) return;
 
     try {
-      const res = await axios.delete(`http://localhost:5000/api/robots/${id}`);
+      // no-return
+      await axios.delete(`${SERVER_URL}/${id}`);
+
       dispatch(deleteUser(id));
-      console.log(res.data);
-      return stableDispatch(deleteUser(id));
+
+      stableDispatch(showAlert(`Deleted ${id}`, 'primary'));
     } catch (error) {
-      // dispatch(showAlert(error.response.data.msg, 'danger'));
       console.error(error.message);
+      stableDispatch(showAlert(error.response.data.msg, 'danger'));
     } finally {
+      // do we need finally?
       setTimeout(() => {
-        dispatch(showAlert(''));
+        stableDispatch(showAlert(''));
       }, 2000);
     }
-  }
+  };
 
-  async function handleEdit() {
+  // EDIT BUTTON > EDIT FORM
+  const handleEdit = async () => {
     if (!id || !users.length) return;
 
+    stableDispatch(editingStatus(true));
+
     try {
-      const res = await axios.put(`http://localhost:5000/api/robots/${id}`);
-      //   const toEditUser = users.find(user => user.id === id);
-      //   dispatch(editingStatus(true));
-      //  dispatch(getUser(toEditUser));
+      // no need to fetch, its already fetch
+      const userToEdit = users.find((user) => user.id === id);
+
+      dispatch(getUser(userToEdit));
+      stableDispatch(showAlert('Editing...', 'info'));
     } catch (error) {
       console.error(error.message);
+      stableDispatch(showAlert('Error Edit', 'danger'));
     }
-  }
+  };
 
   return (
     <>

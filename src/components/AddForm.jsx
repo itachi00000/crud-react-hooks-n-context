@@ -1,11 +1,16 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 
+// ctx
 import { GlobalContext } from '../context/GlobalState';
 
-// redux action
+// action
 import { addUser, showAlert } from '../redux/usersAction';
 
+// utils
+import { SERVER_URL } from '../server-url';
+
+// main
 export default function AddForm() {
   const initStateForm = {
     name: '',
@@ -14,48 +19,53 @@ export default function AddForm() {
   };
 
   const [input, setInput] = useState(initStateForm);
-  const { dispatch } = useContext(GlobalContext);
+  const { dispatch, stableDispatch } = useContext(GlobalContext);
 
-  async function handleAddUser() {
+  const handleAddUser = async () => {
     try {
       const { name, username, email } = input;
+
       if (!name || !username || !email) {
-        dispatch(showAlert('Lack of Info', 'danger'));
-        return;
+        return stableDispatch(showAlert('Lack of Info', 'danger'));
       }
-      const resp = await axios.post('http://localhost:5000/api/robots', {
+
+      const resp = await axios.post(`${SERVER_URL}`, {
         name,
         username,
         email
       });
-      dispatch(addUser(resp.data[0]));
-      dispatch(showAlert('Added new User', 'success'));
-      setInput(initStateForm);
+
+      dispatch(addUser(resp.data));
+
+      stableDispatch(showAlert('Added new User', 'success'));
+
+      // reset
+      return setInput(initStateForm);
     } catch (error) {
       if (error.response) {
-        console.log('error.response:', error.response.data.msg);
-        dispatch(showAlert(error.response.data.msg, 'danger'));
-        return;
+        console.error('error.response:', error.response.data.msg);
+        return stableDispatch(showAlert(error.response.data.msg, 'danger'));
       }
-      console.log('error.message: ', error.message);
-      dispatch(showAlert(error.message, 'danger'));
+      console.error('error.message: ', error.message);
+      return stableDispatch(showAlert(error.message, 'danger'));
     } finally {
       setTimeout(() => {
         // clearing msg
-        dispatch(showAlert(''));
+        stableDispatch(showAlert(''));
       }, 2000);
     }
-  }
+  };
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
+
     setInput({ ...input, [name]: value });
-  }
+  };
 
   const { name, email, username } = input;
 
   return (
-    <div className="col-lg-4">
+    <div className="col-lg-3 col-md-3">
       <h3>Add Form</h3>
       <form>
         <div className="form-group">

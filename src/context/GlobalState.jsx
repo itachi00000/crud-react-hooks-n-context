@@ -1,49 +1,50 @@
-import React, { useReducer, createContext, useEffect } from 'react';
-import axios from 'axios';
+import React, {
+  useReducer,
+  createContext,
+  useCallback
+  // useEffect,
+} from 'react';
 
 // reducer
 import { usersReducer } from '../redux/usersReducer';
-import { fetchUsers } from '../redux/usersAction';
 
-import {
-  ADD_USER,
-  DELETE_USER,
-  EDIT_USER,
-  FETCH_USERS,
-  GET_USER,
-  SEARCH_USER
-} from '../redux/types';
-
-// actions
-import {
-  fetchUsers,
-  showAlert,
-  getUser,
-  setIsError
-} from '../redux/usersAction';
-
+// init
 const initialState = {
   users: [],
   currentUser: null,
   searchQuery: '',
   editing: false,
-  inputs: { name: '', username: '', email: '' },
+  inputs: { name: '', username: '', email: '' }, // ??
   alerts: { alertMsg: '', alertType: '', id: null },
   fetchStatus: { isLoading: false, isError: false, isSuccess: false }
 };
 
-const initialState2 = {};
+// const initialState2 = {};
 
 export const GlobalContext = createContext(initialState);
 
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(usersReducer, initialState);
 
+  const stableDispatch = useCallback(dispatch, []);
+
+  return (
+    <GlobalContext.Provider
+      value={{
+        ...state,
+        dispatch,
+        stableDispatch
+      }}
+    >
+      {children}
+    </GlobalContext.Provider>
+  );
+
   // GET ALL, (from old)
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
-  //       const resp = await axios.get('http://localhost:5000/api/robots');
+  //       const resp = await axios.get(`${SERVER_URL}`);
   //       dispatch(fetchUsers(resp.data));
   //       dispatch(showAlert('Fetch Success', 'success'));
   //     } catch (error) {
@@ -59,20 +60,11 @@ export const GlobalProvider = ({ children }) => {
   //   fetchData();
   // }, []);
 
-  const stableDispatch = useCallback(dispatch, []);
   // function fetchingUsers(usersS) {
   //   dispatch({ type: 'FETCH_USERS', payload: usersS });
   // }
 
-  function dispatchFetchUsers(users) {
-    dispatch(fetchUsers(users));
-  }
-
-  return (
-    <GlobalContext.Provider
-      value={{ ...state, dispatch, dispatchFetchUsers, stableDispatch }}
-    >
-      {children}
-    </GlobalContext.Provider>
-  );
+  // function dispatchFetchUsers(users) {
+  //   dispatch(fetchUsers(users));
+  // }
 };
