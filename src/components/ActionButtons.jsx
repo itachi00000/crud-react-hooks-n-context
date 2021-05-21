@@ -13,7 +13,8 @@ import {
 } from '../redux/usersAction';
 
 export default function ActionButtons({ id }) {
-  const { dispatch, users } = useContext(GlobalContext);
+  // const { dispatch, users } = useContext(GlobalContext);
+  const { stableDispatch } = useContext(GlobalContext);
 
   // async delete???
   // [add] window.confirm
@@ -26,8 +27,9 @@ export default function ActionButtons({ id }) {
       const res = await axios.delete(`http://localhost:5000/api/robots/${id}`);
       dispatch(deleteUser(id));
       console.log(res.data);
+      return stableDispatch(deleteUser(id));
     } catch (error) {
-      dispatch(showAlert(error.response.data.msg, 'danger'));
+      // dispatch(showAlert(error.response.data.msg, 'danger'));
       console.error(error.message);
     } finally {
       setTimeout(() => {
@@ -36,13 +38,17 @@ export default function ActionButtons({ id }) {
     }
   }
 
-  function handleEdit() {
+  async function handleEdit() {
     if (!id || !users.length) return;
 
-    const toEditUser = users.find(user => user.id === id);
-
-    dispatch(editingStatus(true));
-    dispatch(getUser(toEditUser));
+    try {
+      const res = await axios.put(`http://localhost:5000/api/robots/${id}`);
+      //   const toEditUser = users.find(user => user.id === id);
+      //   dispatch(editingStatus(true));
+      //  dispatch(getUser(toEditUser));
+    } catch (error) {
+      console.error(error.message);
+    }
   }
 
   return (

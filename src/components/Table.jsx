@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import axios from 'axios';
 
 // context
 import { GlobalContext } from '../context/GlobalState';
@@ -9,18 +10,35 @@ import EditForm from './EditForm';
 import ActionButtons from './ActionButtons';
 
 export default function Table() {
-  const { users, searchQuery, currentUser, editing } = useContext(
-    GlobalContext
-  );
+  const {
+    users,
+    searchQuery,
+    currentUser,
+    stableDispatch,
+    editing
+  } = useContext(GlobalContext);
 
-  // for logging
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resp = await axios.get('http://localhost:5000/api/robots');
+        return stableDispatch(fetchUsers(resp.data));
+      } catch (error) {
+        return console.error(error.message);
+      }
+    };
+    console.log('use-effect getAllUser');
+
+    fetchData();
+  }, [stableDispatch]);
+
   console.log('users:', users);
   console.log('searchQuery:', searchQuery);
   console.log('currentUser:', currentUser);
   console.log('editing:', editing);
   console.log('<<<<*******************>>>>');
 
-  const filteredUsers = users.filter(user => {
+  const filteredUsers = users.filter((user) => {
     return user.name.toLowerCase().includes(searchQuery.toLowerCase().trim());
   });
 
