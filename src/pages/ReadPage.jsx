@@ -11,25 +11,25 @@ import BackHome from '../components/BackHome';
 
 export default function ReadPage() {
   const [errorFetch, setErrorFetch] = useState(false);
-
-  const { currentUser, users, searchQuery, dispatch } = useContext(
+  const { currentUser, users, searchQuery, stableDispatch } = useContext(
     GlobalContext
   );
+
   const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const resp = await axios.get(`http://localhost:5000/api/robots/${id}`);
-        const user = resp.data;
-        dispatch(getUser(user));
+        stableDispatch(getUser(resp.data));
       } catch (error) {
         console.error('errror', error.message);
         setErrorFetch(true);
       }
     };
+    console.log('useEffect- getOneUser');
     fetchData();
-  }, [dispatch, id]);
+  }, [id, stableDispatch]);
 
   // for checking
   console.log('users:', users);
