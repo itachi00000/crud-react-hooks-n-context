@@ -27,3 +27,4 @@ yarn-error.log*
 /src/usersData.js
 NOTES.txt
 .eslintrc.json
+.env
