@@ -1,6 +1,7 @@
 {
   "name": "react-hooks-crud",
   "version": "0.1.0",
+  "homepage": "https://itachi00000.github.io/crud-react-hooks-n-context/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "4.2.4",
@@ -38,7 +39,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages-clean && gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
