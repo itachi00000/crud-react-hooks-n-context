@@ -13,6 +13,7 @@ import ErrorPage from './pages/ErrorPage';
 // context, redux
 import { GlobalContext } from './context/GlobalState';
 
+// main
 export default function App() {
   const { alerts } = useContext(GlobalContext);
 
@@ -20,7 +21,12 @@ export default function App() {
     <>
       <Header />
       <div className="container-fluid">
-        {alerts.alertMsg && <Alert alerts={alerts} />}
+        {alerts.alertMsg ? (
+          <Alert alerts={alerts} />
+        ) : (
+          // spacer
+          <div style={{ height: '67px' }} />
+        )}
 
         <div className="row justify-content-md-center">
           <Switch>
@@ -31,6 +37,7 @@ export default function App() {
           </Switch>
         </div>
       </div>
+      {/* spacer */}
       <div style={{ height: '300px' }} />
     </>
   );

@@ -7,11 +7,11 @@ import { GlobalContext } from '../context/GlobalState';
 import { searchUser } from '../redux/usersAction';
 
 export default function SearchField() {
-  const { searchQuery: inputValue, dispatch } = useContext(GlobalContext);
+  const { searchQuery: inputValue, stableDispatch } = useContext(GlobalContext);
 
-  function handleInputChange(e) {
-    dispatch(searchUser(e.target.value));
-  }
+  const handleInputChange = (e) => {
+    stableDispatch(searchUser(e.target.value));
+  };
 
   return (
     <div role="form">

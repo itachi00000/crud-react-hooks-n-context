@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { GlobalProvider } from './context/GlobalState';
 
-// compo
+// comp
 import App from './App';
 // css
 import './bootstrap.min.css';

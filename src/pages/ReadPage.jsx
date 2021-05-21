@@ -9,6 +9,10 @@ import { getUser } from '../redux/usersAction';
 // comp.
 import BackHome from '../components/BackHome';
 
+// utils
+import { SERVER_URL } from '../server-url';
+
+// main
 export default function ReadPage() {
   const [errorFetch, setErrorFetch] = useState(false);
   const { currentUser, users, searchQuery, stableDispatch } = useContext(
@@ -17,13 +21,14 @@ export default function ReadPage() {
 
   const { id } = useParams();
 
+  //
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get(`http://localhost:5000/api/robots/${id}`);
+        const resp = await axios.get(`${SERVER_URL}/${id}`);
         stableDispatch(getUser(resp.data));
       } catch (error) {
-        console.error('errror', error.message);
+        console.error('at fetch-a-user', error.message);
         setErrorFetch(true);
       }
     };

@@ -12,6 +12,7 @@ import {
 } from './types';
 
 //   for editingUser
+// same as .mapping
 function updatingUsers(users, updUser) {
   const userIndex = users.findIndex((user) => user.id === updUser.id);
   const updatedUsers = [
@@ -22,7 +23,8 @@ function updatingUsers(users, updUser) {
   return updatedUsers;
 }
 
-// redux state=initState  xxxx
+// redux state=initState
+// global context give initState
 export function usersReducer(state, action) {
   const { type, payload } = action;
 
@@ -45,8 +47,6 @@ export function usersReducer(state, action) {
     case GET_USER:
       return {
         ...state,
-        // users: [],
-        // currentUser: payload
         currentUser: payload
       };
     case IS_ERROR:
